@@ -46,7 +46,7 @@ module.exports.gen = function () {
         //embed logo
         .image('public/images/logo.png', 35, 30, { width: 35, height: 35 })
 
-        //write business name
+        //write doc title
         .fontSize(30)
         .fillColor('black')
         .text('PAYMENT INVOICE', 80, 40)
