@@ -51,11 +51,6 @@ module.exports.gen = function () {
         .fillColor('black')
         .text('PAYMENT INVOICE', 80, 40)
 
-        // .moveDown(0.5)
-        // .fontSize(20)
-        // .fillColor('black')
-        // .text('PAYMENT INVOICE', 35)
-
         //write invoice creation details
         .font('Helvetica-Bold')
         .fontSize(8.5)
