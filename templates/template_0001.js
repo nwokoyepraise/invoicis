@@ -20,6 +20,7 @@ module.exports.gen = function () {
     let business_state = 'Anambra';
     let business_country = 'Nigeria';
     let business_postal_code = '420101';
+    let business_accent_color = '#008080';
     let client_name = 'Green Farms Limited';
     let client_address = 'Zik Industrial Layout, Ogbommanu'
     let client_district = 'Onitsha'
@@ -42,15 +43,15 @@ module.exports.gen = function () {
     invoice.pipe(fs.createWriteStream('output.pdf'));
 
     invoice
-        .fontSize(20)
-        .fillColor('#008080')
+        .fontSize(30)
+        .fillColor('black')
         .text('PAYMENT INVOICE', 35, 40)
 
-        .moveDown(0.5)
+        //write invoice creation details
         .font('Helvetica-Bold')
         .fontSize(8.5)
         .fillColor('#8E9092')
-        .text(invoice_no.slice(0, 11), { continued: true })
+        .text(invoice_no.slice(0, 11), 35, 80, { continued: true })
         .fillColor('black')
         .text(invoice_no.slice(12))
 
@@ -150,14 +151,14 @@ module.exports.gen = function () {
         .font('Helvetica')
         .text(client_phone)
 
-        .rect(30, 260, 535, 17)
+        .rect(30, 300, 535, 17)
         .fill(business_accent_color);
 
 
     //draw item rects
     let last_y2;
     for (let i = 0; i < 6; i++) {
-        let y1 = (i == 0) ? 277 : last_y2 + 17;
+        let y1 = (i == 0) ? 317 : last_y2 + 17;
         let y2 = y1 + 17;
         last_y2 = y2;
         invoice.rect(30, y1, 535, 17)
@@ -166,73 +167,80 @@ module.exports.gen = function () {
             .fill('#EFEBF9');
     }
 
-    //partition item details rect box
+    //partition item details rect boxh
+    let last_y2_bottom = last_y2 + 17;
     invoice.lineWidth(1)
         .lineCap('butt')
         .moveTo(60, 300)
-        .lineTo(60, 345)
-        .moveTo(235, 300)
-        .lineTo(235, 345)
+        .lineTo(60, last_y2_bottom)
         .moveTo(270, 300)
-        .lineTo(270, 345)
-        .moveTo(335, 300)
-        .lineTo(335, 345)
-        .moveTo(390, 300)
-        .lineTo(390, 345)
-        .moveTo(455, 300)
-        .lineTo(455, 345)
+        .lineTo(270, last_y2_bottom)
+        .moveTo(300, 300)
+        .lineTo(300, last_y2_bottom)
+        .moveTo(340, 300)
+        .lineTo(340, last_y2_bottom)
+        .moveTo(400, 300)
+        .lineTo(400, last_y2_bottom)
+        .moveTo(450, 300)
+        .lineTo(450, last_y2_bottom)
         .moveTo(500, 300)
-        .lineTo(500, 345)
-        .stroke()
+        .lineTo(500, last_y2_bottom)
+        .stroke('black')
 
         //write items detail titles
         .font('Helvetica-Bold')
         .fillColor('white')
         .text(`No.`, 35, 305)
         .text('Item', 135, 305)
-        .text('GST', 242, 305)
-        .text('Quantity', 285, 305)
-        .text(`Rate`, 350, 305)
-        .text(`Amount`, 405, 305)
-        .text('IGST', 465, 305)
+        .text('Tax', 275, 305)
+        .text('Quantity', 302, 305)
+        .text(`Rate`, 360, 305)
+        .text(`Amount`, 407, 305)
+        .text('Tax Sum', 455, 305)
         .text('Total', 525, 305, { lineBreak: false })
         .font('Helvetica')
-        .fillColor('black')
+        .fillColor('black');
 
-        //write item details
-        .text(`1.`, 35, 330)
-        .text(item_name, 70, 330)
-        .text(`%${tax}`, 242, 330)
-        .text('1', 300, 330)
-        .text(item_amount, 350, 330)
-        .text(item_amount, 405, 330)
-        .text(tax_total, 465, 330)
-        .text(pay_total, 525, 330)
+    //write item details
+    let last_y;
+    for (let i = 0; i < 1; i++) {
 
-        //write amount totals
-        .text(`Total in Words: ${sub_total_words}`, 35, 355)
+        let y = (i == 0) ? 317 + 5 : last_y + 17;
+        last_y = y;
+        invoice.text(`1.`, 35, y)
+            .text(item_name, 70, y)
+            .text(`%${tax}`, 275, y)
+            .text('1', 310, y)
+            .text(item_amount, 355, y)
+            .text(item_amount, 410, y)
+            .text(tax_total, 455, y)
+            .text(pay_total, 515, y, { lineBreak: false });
+    }
+
+    //write amount totals
+    invoice.text(`Total in Words: ${sub_total_words}`, 35, last_y2_bottom + 10)
         .font('Helvetica-Bold')
-        .text(`Amount:              `, 460, 355, { continued: true, lineBreak: false })
+        .text(`SubTotal:              `, 460, last_y2_bottom + 10, { continued: true, lineBreak: false })
         .font('Helvetica')
         .text(item_amount, { lineBreak: false })
         .font('Helvetica-Bold')
-        .text(`IGST:                    `, 460, 370, { continued: true, lineBreak: false })
+        .text(`Tax:                    `, 460, last_y2_bottom + 25, { continued: true, lineBreak: false })
         .font('Helvetica')
         .text(tax_total, { lineBreak: false })
-        .moveTo(450, 383)
-        .lineTo(565, 383)
+        .moveTo(450, last_y2_bottom + 35)
+        .lineTo(565, last_y2_bottom + 35)
         .stroke('black')
         .font('Helvetica-Bold')
-        .text(`Total ${pay_curr}:         `, 460, 390, { continued: true, lineBreak: false })
+        .text(`Total (${pay_curr}):      `, 460, last_y2_bottom + 40, { continued: true, lineBreak: false })
         .font('Helvetica')
         .text(parseFloat(pay_total).toFixed(2), { lineBreak: false })
 
-        //write enquiry details
-        .font('Helvetica-Bold')
-        .text(`For any enquiry, reach out via email ${business_email} or call on ${business_phone}`, 100, 435)
-        .text('This is an electronically generated document, no signature is required.', 150, 755)
-        .save()
 
+        //write enquiry details
+    .font('Helvetica-Bold')
+    .text(`For any enquiry, reach out via email ${business_email} or call on ${business_phone}`, 100, last_y2_bottom + 70)
+    .text('This is an electronically generated document, no signature is required.', 150,  Math.round(invoice.page.maxY()) - 20);
+    invoice.save();
 
     //close file stream
     invoice.end();
