@@ -150,14 +150,24 @@ module.exports.gen = function () {
         .font('Helvetica')
         .text(client_phone)
 
-        //draw item details rect box
-        .rect(30, 300, 535, 20)
-        .fill('#008080')
-        .rect(30, 320, 535, 25)
-        .fill('#EFEBF9')
+        .rect(30, 260, 535, 17)
+        .fill(business_accent_color);
 
-        //partition item details rect box
-        .lineWidth(1)
+
+    //draw item rects
+    let last_y2;
+    for (let i = 0; i < 6; i++) {
+        let y1 = (i == 0) ? 277 : last_y2 + 17;
+        let y2 = y1 + 17;
+        last_y2 = y2;
+        invoice.rect(30, y1, 535, 17)
+            .fill('white')
+            .rect(30, y2, 535, 17)
+            .fill('#EFEBF9');
+    }
+
+    //partition item details rect box
+    invoice.lineWidth(1)
         .lineCap('butt')
         .moveTo(60, 300)
         .lineTo(60, 345)
