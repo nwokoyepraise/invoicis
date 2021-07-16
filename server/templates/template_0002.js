@@ -11,8 +11,7 @@ module.exports.gen = function () {
     let mdate = new Date().toUTCString();
     let invoice_date = `Invoice Date    ${mdate}`;
     let business_name = 'Invoicis Private Limited'
-    let business_gstin = 'GSTIN: 29AANCM6721C1ZD';
-    let business_pan = 'PAN: AANCM6721C'
+    let business_website = 'Website: www.website.com';
     let business_email = 'Email: support@invoicis.com'
     let business_phone = 'Phone: +234-000-00000'
     let business_address = '50 Dike Boulevard, Kingdoms Layout, Agu-Awka';
@@ -26,7 +25,6 @@ module.exports.gen = function () {
     let client_district = 'Onitsha'
     let client_state = 'Anambra';
     let client_postal_code = '420108'
-    let client_pan = 'AABTB8287B'
     let client_email = 'greenfarmslimited458@gmail.com'
     let client_phone = '+234-000-000001'
     let client_country = 'Nigeria'
@@ -99,16 +97,6 @@ module.exports.gen = function () {
         .text(`${business_state} - ${business_country} - ${business_postal_code}`)
         .moveDown(indent_spacing)
         .font('Helvetica-Bold')
-        .text(business_gstin.slice(0, 6), { continued: true })
-        .font('Helvetica')
-        .text(business_gstin.slice(6))
-        .moveDown(indent_spacing)
-        .font('Helvetica-Bold')
-        .text(business_pan.slice(0, 4), { continued: true })
-        .font('Helvetica')
-        .text(business_pan.slice(4))
-        .moveDown(indent_spacing)
-        .font('Helvetica-Bold')
         .text(business_email.slice(0, 5), { continued: true })
         .font('Helvetica')
         .text(business_email.slice(5))
@@ -117,6 +105,11 @@ module.exports.gen = function () {
         .text(business_phone.slice(0, 5), { continued: true })
         .font('Helvetica')
         .text(business_phone.slice(5))
+        .moveDown(indent_spacing)
+        .font('Helvetica-Bold')
+        .text(business_website.slice(0, 7), { continued: true })
+        .font('Helvetica')
+        .text(business_website.slice(7))
 
         //write customer details
         .font('Helvetica')
@@ -136,11 +129,6 @@ module.exports.gen = function () {
         .text(`${client_district},`)
         .moveDown(indent_spacing)
         .text(`${client_state}, - ${client_country} - ${client_postal_code}`)
-        .moveDown(indent_spacing)
-        .font('Helvetica-Bold')
-        .text('PAN: ', { continued: true })
-        .font('Helvetica')
-        .text(client_pan)
         .moveDown(indent_spacing)
         .font('Helvetica-Bold')
         .text('Email: ', { continued: true })
