@@ -4,11 +4,10 @@ const app = express();
 const server = require('http').createServer(app);
 const port_number = Number.parseInt(process.env.PORT_NUMBER);
 
-const gen_invoice = require('./gen_invoice');
-gen_invoice(app)
 
+const gen_invoice = require('./api/invoice_handler/gen_invoice');
+gen_invoice(app);
 
 server.listen(port_number, () => {
     console.log(`server listening on port ${port_number}`);
 });
-
