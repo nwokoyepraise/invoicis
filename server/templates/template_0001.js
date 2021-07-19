@@ -2,40 +2,34 @@ const pdf_doc = require('pdfkit');
 const fs = require('fs');
 const num_words = require('number-to-words');
 
-module.exports.gen = function () {
+module.exports.gen = function (data) {
     const invoice = new pdf_doc({ size: 'A4' });
-    let no = `0000000000000000000000`;
-    let invoice_no = `Invoice No#    ${no}`;
+    let no = `0000000000000000000000`,
+        invoice_no = `Invoice No#    ${no}`,
 
-    //set invoice details
-    let mdate = new Date().toUTCString();
-    let invoice_date = `Invoice Date    ${mdate}`;
-    let business_name = 'Invoicis Private Limited'
-    let business_website = 'Website: www.website.com';
-    let business_email = 'Email: support@invoicis.com'
-    let business_phone = 'Phone: +234-000-00000'
-    let business_address = '50 Dike Boulevard, Kingdoms Layout, Agu-Awka';
-    let business_district = 'Awka';
-    let business_state = 'Anambra';
-    let business_country = 'Nigeria';
-    let business_postal_code = '420101';
-    let business_accent_color = '#008080';
-    let client_name = 'Green Farms Limited';
-    let client_address = 'Zik Industrial Layout, Ogbommanu'
-    let client_district = 'Onitsha'
-    let client_state = 'Anambra';
-    let client_postal_code = '420108'
-    let client_email = 'greenfarmslimited458@gmail.com'
-    let client_phone = '+234-000-000001'
-    let client_country = 'Nigeria'
-    let item_name = 'Invoicis Basic Membership';
-    let pay_curr = 'NGN'
-    let pay_total = 5000
-    let tax = 18;
-    let tax_total = parseFloat((tax / 100) * pay_total).toFixed(2);
-    let item_amount = pay_total - tax_total;
-    let sub_total_words = num_words.toWords(pay_total).toUpperCase();
-    let indent_spacing = 0.3;
+        //set invoice details
+        invoice_date = new Date().toUTCString(),
+        business_name = data.business_name,
+        business_website = data.business_website,
+        business_email = data.business_email,
+        business_phone = data.business_phone,
+        business_address = data.business_address,
+        business_district = data.business_district,
+        business_state = data.business_state,
+        business_country = data.business_country,
+        business_postal_code = data.business_postal_code,
+        business_accent_color = (data.business_accent_color) ? data.business_accent_color : '#008080',
+        client_name = data.client_name,
+        client_address = data.client_address,
+        client_district = data.client_district,
+        client_state = data.client_state,
+        client_postal_code = data.client_postal_code,
+        client_email = data.client_email,
+        client_phone = data.client_phone,
+        client_country = data.client_country,
+        pay_curr = data.pay_curr,
+        item_desc = data.item_desc,
+        indent_spacing = (data.indent_spacing) ? data.indent_spacing : 0.3;
 
     //create file stream
     invoice.pipe(fs.createWriteStream('output.pdf'));
@@ -49,17 +43,17 @@ module.exports.gen = function () {
         .font('Helvetica-Bold')
         .fontSize(8.5)
         .fillColor('#8E9092')
-        .text(invoice_no.slice(0, 11), 35, 80, { continued: true })
+        .text('Invoice No#    ', 35, 80, { continued: true })
         .fillColor('black')
-        .text(invoice_no.slice(12))
+        .text(invoice_no)
 
         .moveDown(0.5)
         .font('Helvetica-Bold')
         .fontSize(8.5)
         .fillColor('#8E9092')
-        .text(invoice_date.slice(0, 12), { continued: true })
+        .text('Invoice Date    ', { continued: true })
         .fillColor('black')
-        .text(invoice_date.slice(13))
+        .text(invoice_date)
 
         //embed logo
         .image('public/images/logo.png', 480, 20, { width: 100, height: 100 })
@@ -101,14 +95,14 @@ module.exports.gen = function () {
         .text(business_email.slice(5))
         .moveDown(indent_spacing)
         .font('Helvetica-Bold')
-        .text(business_phone.slice(0, 5), { continued: true })
+        .text('Phone: ', { continued: true })
         .font('Helvetica')
-        .text(business_phone.slice(5))
+        .text(business_name)
         .moveDown(indent_spacing)
         .font('Helvetica-Bold')
-        .text(business_website.slice(0, 7), { continued: true })
+        .text('Website: ', { continued: true })
         .font('Helvetica')
-        .text(business_website.slice(7))
+        .text(business_website)
 
         //write customer details
         .font('Helvetica')
@@ -191,7 +185,18 @@ module.exports.gen = function () {
 
     //write item details
     let last_y;
-    for (let i = 0; i < 1; i++) {
+    let mtax_amounts = [];
+    let mitem_amounts = [];
+    for (let i = 0; i < item_desc.length; i++) {
+        let item_name = item_desc[i].item_name,
+            pay_total = (item_desc[i].pay_total) ? item_desc[i].pay_total : 0,
+            tax = (item_desc[i].tax) ? item_desc[i].tax : 0,
+            tax_amount = parseFloat((tax / 100) * pay_total).toFixed(2),
+            item_amount = pay_total - tax_amount;
+
+        mtax_amounts.push(tax_amount);
+        mitem_amounts.push(item_amount);
+
 
         let y = (i == 0) ? 317 + 5 : last_y + 17;
         last_y = y;
@@ -201,33 +206,38 @@ module.exports.gen = function () {
             .text('1', 310, y)
             .text(item_amount, 355, y)
             .text(item_amount, 410, y)
-            .text(tax_total, 455, y)
+            .text(tax_amount, 455, y)
             .text(pay_total, 515, y, { lineBreak: false });
     }
 
+    let amount_sum = mitem_amounts.reduce((a, b) => a + b, 0);
+    let tax_sum = mtax_amounts.reduce((a, b) => a + b, 0)
+
+    let grand_total_words = num_words.toWords(amount_sum + tax_sum).toUpperCase();
+
     //write amount totals
-    invoice.text(`Total in Words: ${sub_total_words}`, 35, last_y2_bottom + 10)
+    invoice.text(`Total in Words: ${grand_total_words}`, 35, last_y2_bottom + 10)
         .font('Helvetica-Bold')
-        .text(`SubTotal:              `, 460, last_y2_bottom + 10, { continued: true, lineBreak: false })
+        .text(`Amount Sum:              `, 460, last_y2_bottom + 10, { continued: true, lineBreak: false })
         .font('Helvetica')
-        .text(item_amount, { lineBreak: false })
+        .text(amount_sum, { lineBreak: false })
         .font('Helvetica-Bold')
-        .text(`Tax:                    `, 460, last_y2_bottom + 25, { continued: true, lineBreak: false })
+        .text(`Tax Sum:                    `, 460, last_y2_bottom + 25, { continued: true, lineBreak: false })
         .font('Helvetica')
-        .text(tax_total, { lineBreak: false })
+        .text(tax_sum, { lineBreak: false })
         .moveTo(450, last_y2_bottom + 35)
         .lineTo(565, last_y2_bottom + 35)
         .stroke('black')
         .font('Helvetica-Bold')
-        .text(`Total (${pay_curr}):      `, 460, last_y2_bottom + 40, { continued: true, lineBreak: false })
+        .text(`Grand Total (${pay_curr}):      `, 460, last_y2_bottom + 40, { continued: true, lineBreak: false })
         .font('Helvetica')
-        .text(parseFloat(pay_total).toFixed(2), { lineBreak: false })
+        .text(parseFloat(amount_sum + tax_sum).toFixed(2), { lineBreak: false })
 
 
         //write enquiry details
-    .font('Helvetica-Bold')
-    .text(`For any enquiry, reach out via email ${business_email} or call on ${business_phone}`, 100, last_y2_bottom + 70)
-    .text('This is an electronically generated document, no signature is required.', 150,  Math.round(invoice.page.maxY()) - 20);
+        .font('Helvetica-Bold')
+        .text(`For any enquiry, reach out via email ${business_email} or call on ${business_phone}`, 100, last_y2_bottom + 70)
+        .text('This is an electronically generated document, no signature is required.', 150, Math.round(invoice.page.maxY()) - 20);
     invoice.save();
 
     //close file stream
