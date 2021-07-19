@@ -190,29 +190,31 @@ module.exports.gen = function (data) {
     let mitem_amounts = [];
     for (let i = 0; i < item_desc.length; i++) {
         let item_name = item_desc[i].item_name,
-            pay_total = (item_desc[i].pay_total) ? item_desc[i].pay_total : 0,
+            item_quantity = (item_desc[i].item_quantity) ? Number(item_desc[i].item_quantity) : 0,
+            item_amount = (item_desc[i].item_amount) ? Number(item_desc[i].item_amount) : 0,
             tax = (item_desc[i].tax) ? item_desc[i].tax : 0,
-            tax_amount = parseFloat((tax / 100) * pay_total).toFixed(2),
-            item_amount = pay_total - tax_amount;
+            tax_amount = Math.round((tax / 100) * item_amount * item_quantity),
+            pay_total = parseFloat((item_amount * item_quantity) + tax_amount);
+
 
         mtax_amounts.push(tax_amount);
-        mitem_amounts.push(item_amount);
+        mitem_amounts.push(pay_total);
 
 
         let y = (i == 0) ? 317 + 5 : last_y + 17;
         last_y = y;
-        invoice.text(i+1, 35, y)
+        invoice.text(i + 1, 35, y)
             .text(item_name, 70, y)
-            .text(`%${tax}`, 275, y)
-            .text('1', 310, y)
+            .text(`${tax}%`, 275, y)
+            .text(item_quantity, 310, y)
             .text(item_amount, 355, y)
-            .text(item_amount, 410, y)
-            .text(tax_amount, 455, y)
+            .text(item_amount * item_quantity, 410, y)
+            .text(tax_amount, 460, y)
             .text(pay_total, 515, y, { lineBreak: false });
     }
 
-    let amount_sum = parseFloat(mitem_amounts.reduce((a, b) => a + b, 0)).toFixed(2);
-    let tax_sum = parseFloat(mtax_amounts.reduce((a, b) => a + b, 0)).toFixed(2);
+    let amount_sum = Number(mitem_amounts.reduce((a, b) => a + b, 0));
+    let tax_sum = Number(mtax_amounts.reduce((a, b) => a + b, 0)); console.log(mitem_amounts, amount_sum, typeof(amount_sum), tax_sum, typeof(tax_sum))
 
     let grand_total_words = num_words.toWords(amount_sum + tax_sum).toUpperCase();
 
