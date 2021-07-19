@@ -28,7 +28,7 @@ module.exports.gen = function (data) {
         client_email = data.client_email,
         client_phone = data.client_phone,
         client_country = data.client_country,
-        pay_curr = data.pay_curr,
+        pay_curr = (data.pay_curr) ? data.pay_curr : 'USD',
         item_desc = data.item_desc,
         indent_spacing = (data.indent_spacing) ? data.indent_spacing : 0.3;
 
