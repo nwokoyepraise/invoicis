@@ -1,3 +1,4 @@
+"use strict"
 const pdf_doc = require('pdfkit');
 const fs = require('fs');
 const num_words = require('number-to-words');
@@ -210,8 +211,8 @@ module.exports.gen = function (data) {
             .text(pay_total, 515, y, { lineBreak: false });
     }
 
-    let amount_sum = mitem_amounts.reduce((a, b) => a + b, 0);
-    let tax_sum = mtax_amounts.reduce((a, b) => a + b, 0);
+    let amount_sum = parseFloat(mitem_amounts.reduce((a, b) => a + b, 0)).toFixed(2);
+    let tax_sum = parseFloat(mtax_amounts.reduce((a, b) => a + b, 0)).toFixed(2);
 
     let grand_total_words = num_words.toWords(amount_sum + tax_sum).toUpperCase();
 
@@ -225,7 +226,7 @@ module.exports.gen = function (data) {
         .text(`Tax Sum:                      `, 440, last_y2_bottom + 25, { continued: true, lineBreak: false })
         .font('Helvetica')
         .text(tax_sum, { lineBreak: false })
-        .moveTo(450, last_y2_bottom + 35)
+        .moveTo(435, last_y2_bottom + 35)
         .lineTo(565, last_y2_bottom + 35)
         .stroke('black')
         .font('Helvetica-Bold')
