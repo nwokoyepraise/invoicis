@@ -211,25 +211,25 @@ module.exports.gen = function (data) {
     }
 
     let amount_sum = mitem_amounts.reduce((a, b) => a + b, 0);
-    let tax_sum = mtax_amounts.reduce((a, b) => a + b, 0)
+    let tax_sum = mtax_amounts.reduce((a, b) => a + b, 0);
 
     let grand_total_words = num_words.toWords(amount_sum + tax_sum).toUpperCase();
 
     //write amount totals
     invoice.text(`Total in Words: ${grand_total_words}`, 35, last_y2_bottom + 10)
         .font('Helvetica-Bold')
-        .text(`Amount Sum:              `, 460, last_y2_bottom + 10, { continued: true, lineBreak: false })
+        .text(`Amount Sum:              `, 440, last_y2_bottom + 10, { continued: true, lineBreak: false })
         .font('Helvetica')
         .text(amount_sum, { lineBreak: false })
         .font('Helvetica-Bold')
-        .text(`Tax Sum:                    `, 460, last_y2_bottom + 25, { continued: true, lineBreak: false })
+        .text(`Tax Sum:                      `, 440, last_y2_bottom + 25, { continued: true, lineBreak: false })
         .font('Helvetica')
         .text(tax_sum, { lineBreak: false })
         .moveTo(450, last_y2_bottom + 35)
         .lineTo(565, last_y2_bottom + 35)
         .stroke('black')
         .font('Helvetica-Bold')
-        .text(`Grand Total (${pay_curr}):      `, 460, last_y2_bottom + 40, { continued: true, lineBreak: false })
+        .text(`Grand Total (${pay_curr}):      `, 440, last_y2_bottom + 40, { continued: true, lineBreak: false })
         .font('Helvetica')
         .text(parseFloat(amount_sum + tax_sum).toFixed(2), { lineBreak: false })
 
