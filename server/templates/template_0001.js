@@ -200,7 +200,7 @@ module.exports.gen = function (data) {
 
         let y = (i == 0) ? 317 + 5 : last_y + 17;
         last_y = y;
-        invoice.text(`1.`, 35, y)
+        invoice.text(i+1, 35, y)
             .text(item_name, 70, y)
             .text(`%${tax}`, 275, y)
             .text('1', 310, y)
