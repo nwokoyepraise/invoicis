@@ -1,7 +1,6 @@
 const template_0001 = require('../../templates/template_0001');
 const template_0002 = require('../../templates/template_0002');
 const template_0003 = require('../../templates/template_0003');
-const null_undefined_checker = require('../../utils/null_undefined_checker');
 
 // module.exports = async function (app) {
 //     //app.post('/api/gen_invoice', function (req, res) {
@@ -44,9 +43,6 @@ module.exports = async function (app) {
             client_name: client_name, client_address: client_address, client_district: client_district, client_state: client_state,
             client_postal_code, client_postal_code, client_email, client_phone, client_country: client_country,  item_desc: item_desc, indent_spacing: indent_spacing
         }
-
-
-        // if (!is_valid[0]) { return res.status(400).send({ status: false, message: `'${valid[1]}' field cannot be null!` });}
 
         switch (template_id) {
             case 'template_0001':
