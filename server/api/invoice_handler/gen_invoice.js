@@ -53,8 +53,8 @@ module.exports = async function (app) {
                 template_0001.gen(obj);
                 break;
 
-            case '':
-
+            case 'template_0002':
+                template_0002.gen(obj);
                 break;
 
             case '':
