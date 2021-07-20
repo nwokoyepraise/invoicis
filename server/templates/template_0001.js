@@ -2,11 +2,12 @@
 const pdf_doc = require('pdfkit');
 const fs = require('fs');
 const num_words = require('number-to-words');
+const crypt_gen = require('../utils/crypt_gen');
 
 module.exports.gen = function (data) {
     const invoice = new pdf_doc({ size: 'A4' });
-    let no = `0000000000000000000000`,
-        invoice_no = `Invoice No#    ${no}`,
+    let no = crypt_gen.gen_invoice_no();
+    let invoice_no = `Invoice No#    ${no}`,
 
         //set invoice details
         invoice_date = new Date().toUTCString(),
@@ -91,9 +92,9 @@ module.exports.gen = function (data) {
         .text(`${business_state} - ${business_country} - ${business_postal_code}`)
         .moveDown(indent_spacing)
         .font('Helvetica-Bold')
-        .text(business_email.slice(0, 5), { continued: true })
+        .text('Email: ', { continued: true })
         .font('Helvetica')
-        .text(business_email.slice(5))
+        .text(business_email)
         .moveDown(indent_spacing)
         .font('Helvetica-Bold')
         .text('Phone: ', { continued: true })
