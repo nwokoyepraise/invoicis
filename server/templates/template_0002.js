@@ -224,7 +224,7 @@ module.exports.gen = function (data) {
         .font('Helvetica')
         .text(amount_sum, { lineBreak: false })
         .font('Helvetica-Bold')
-        .text(`Tax Sum:                    `, 440, last_y2_bottom + 25, { continued: true, lineBreak: false })
+        .text(`Tax Sum:                      `, 440, last_y2_bottom + 25, { continued: true, lineBreak: false })
         .font('Helvetica')
         .text(tax_sum, { lineBreak: false })
         .moveTo(435, last_y2_bottom + 35)
