@@ -214,7 +214,7 @@ module.exports.gen = function (data) {
     }
 
     let amount_sum = Number(mitem_amounts.reduce((a, b) => a + b, 0));
-    let tax_sum = Number(mtax_amounts.reduce((a, b) => a + b, 0)); console.log(mitem_amounts, amount_sum, typeof(amount_sum), tax_sum, typeof(tax_sum))
+    let tax_sum = Number(mtax_amounts.reduce((a, b) => a + b, 0));
 
     let grand_total_words = num_words.toWords(amount_sum + tax_sum).toUpperCase();
 
