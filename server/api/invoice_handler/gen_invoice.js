@@ -57,8 +57,8 @@ module.exports = async function (app) {
                 template_0002.gen(obj);
                 break;
 
-            case '':
-
+            case 'template_0003':
+                template_0003.gen(obj);
                 break;
         }
         } catch (error) {
