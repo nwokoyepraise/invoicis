@@ -189,7 +189,8 @@ module.exports.gen = function (data) {
     let last_y;
     let mtax_amounts = [];
     let mitem_amounts = [];
-    for (let i = 0; i < item_desc.length; i++) {
+    let max_item_length = (item_desc.length <= 12) ? item_desc.length : 12;
+    for (let i = 0; i < max_item_length; i++) {
         let item_name = item_desc[i].item_name,
             item_quantity = (item_desc[i].item_quantity) ? Number(item_desc[i].item_quantity) : 0,
             item_amount = (item_desc[i].item_amount) ? Number(item_desc[i].item_amount) : 0,
