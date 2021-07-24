@@ -1,10 +1,11 @@
 "use strict"
 const pdf_doc = require('pdfkit');
 const num_words = require('number-to-words');
+const crypt_gen = require('../utils/crypt_gen');
 
 module.exports.gen = function (data, res) {
     const invoice = new pdf_doc({ size: 'A4' });
-    let num = `0000000000000000000000`;
+    let num = crypt_gen.gen_invoice_no();
     let invoice_no = `Invoice No#    ${num}`,
 
         //set invoice details
