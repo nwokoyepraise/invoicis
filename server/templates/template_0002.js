@@ -1,12 +1,11 @@
 "use strict"
 const pdf_doc = require('pdfkit');
-const fs = require('fs');
 const num_words = require('number-to-words');
 
-module.exports.gen = function (data) {
+module.exports.gen = function (data, res) {
     const invoice = new pdf_doc({ size: 'A4' });
-    let no = `0000000000000000000000`;
-    let invoice_no = `Invoice No#    ${no}`,
+    let num = `0000000000000000000000`;
+    let invoice_no = `Invoice No#    ${num}`,
 
         //set invoice details
         invoice_date = new Date().toUTCString(),
@@ -33,7 +32,7 @@ module.exports.gen = function (data) {
         indent_spacing = (data.indent_spacing) ? data.indent_spacing : 0.3;
 
     //create file stream
-    invoice.pipe(fs.createWriteStream('output2.pdf'));
+    invoice.pipe(res);
 
     invoice
         //embed logo

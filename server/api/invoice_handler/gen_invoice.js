@@ -52,11 +52,11 @@ module.exports = function (app) {
                     break;
 
                 case 'template_0002':
-                    await template_0002.gen(obj);
+                    await template_0002.gen(obj, res);
                     break;
 
                 case 'template_0003':
-                    await template_0003.gen(obj);
+                    await template_0003.gen(obj, res);
                     break;
 
             }
