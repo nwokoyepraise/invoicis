@@ -1,6 +1,5 @@
 "use strict"
 const pdf_doc = require('pdfkit');
-const fs = require('fs');
 const num_words = require('number-to-words');
 const crypt_gen = require('../utils/crypt_gen');
 
