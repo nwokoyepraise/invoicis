@@ -37,7 +37,7 @@ module.exports.chk_jwt = async function (user_id, jwt, res) {
     try {
         var res0 = await mjwt.verify(jwt, key);
         if (!res0.email_verified){res.status(406).send({ status: false, message: 'Email not verified!' }); return valid;}
-        if (res0.id == user_id) {
+        if (res0.user_id == user_id) {
             valid = true;
         } else {
             throw new Error('JWT and user_id mismatch!');
