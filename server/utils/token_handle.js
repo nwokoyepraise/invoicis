@@ -9,7 +9,7 @@ const key = process.env.JWTKEY;
 module.exports.gen_rjwt = async function () {
     let rjwt = {};
     try {
-        const mrjwt = crypt_gen.gen();
+        const mrjwt = crypt_gen.gen(12);
         const _mrjwt = await argon2.hash(mrjwt);
 
         rjwt.value = mrjwt;
