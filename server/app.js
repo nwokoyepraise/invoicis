@@ -15,6 +15,9 @@ user_reg(app);
 const user_auth = require('./api/user_handler/user_auth');
 user_auth.user_login(app);
 
+const user_key = require('./api/user_handler/user_key');
+user_key.gen_api_key(app)
+
 server.listen(port_number, () => {
     console.log(`server listening on port ${port_number}`);
 });
