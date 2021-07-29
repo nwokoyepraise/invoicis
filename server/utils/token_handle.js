@@ -36,7 +36,7 @@ module.exports.chk_jwt = async function (user_id, jwt, res) {
 
     try {
         var res0 = await mjwt.verify(jwt, key);
-        if (!res0.email_verified){res.status(406).send({ status: false, message: 'Email not verified!' }); return valid;}
+        if (!res0.email_verified) { res.status(406).send({ status: false, message: 'Email not verified!' }); return valid; }
         if (res0.user_id == user_id) {
             valid = true;
         } else {
@@ -60,4 +60,16 @@ module.exports.get_auth = function (authHeader) {
     if (!authHeader) { return '' }
     auth = authHeader.split(' ')[1];
     return auth;
+}
+
+module.exports.gen_api_key = async function () {
+    let key = {};
+    try {
+        key.key_id = crypt_gen.gen(20);
+        key.key_secret = crypt_gen.gen(40);
+        key._key_secret = await argon2.hash(key_secret);
+    } catch (error) {
+        console.error(error);
+    }
+    return key;
 }
