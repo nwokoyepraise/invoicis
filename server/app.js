@@ -12,6 +12,9 @@ gen_invoice(app);
 const user_reg = require('./api/user_handler/user_reg');
 user_reg(app);
 
+const user_auth = require('./api/user_handler/user_auth');
+user_auth.user_login(app);
+
 server.listen(port_number, () => {
     console.log(`server listening on port ${port_number}`);
 });
