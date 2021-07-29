@@ -3,7 +3,7 @@ const argon2 = require('argon2');
 const token_handle = require('../../utils/token_handle');
 const user = require('./user_model');
 
-module.exports.user_login = async function (app) {
+module.exports.user_login =  function (app) {
     app.post('/user_login', async (req, res) => {
         try {
             let body = req.body.user,
