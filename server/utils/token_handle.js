@@ -67,7 +67,7 @@ module.exports.gen_api_key = async function () {
     try {
         key.key_id = crypt_gen.gen(20);
         key.key_secret = crypt_gen.gen(40);
-        key._key_secret = await argon2.hash(key_secret);
+        key._key_secret = await argon2.hash(key.key_secret);
     } catch (error) {
         console.error(error);
     }
