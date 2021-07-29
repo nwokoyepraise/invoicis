@@ -21,6 +21,9 @@ user_key.gen_api_key(app)
 const user_update = require('./api/user_handler/user_update');
 user_update(app);
 
+const user_profile = require('./api/user_handler/user_profile');
+user_profile.get_user_profile(app);
+
 server.listen(port_number, () => {
     console.log(`server listening on port ${port_number}`);
 });
