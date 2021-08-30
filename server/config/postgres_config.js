@@ -9,4 +9,4 @@ const pool = new Pool({
     ssl: isProoduction
 });
 
-module.exports = { pool }
+module.exports = pool
