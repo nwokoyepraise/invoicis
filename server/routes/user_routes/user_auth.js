@@ -11,6 +11,5 @@ module.exports.user_login = router.post('', async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).send({ status: false, message: "Internal Server Error" });
     }
 });
