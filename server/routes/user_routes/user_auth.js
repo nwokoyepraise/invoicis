@@ -1,4 +1,4 @@
-const user_auth_handler = require('../../services/user_services.js/user_auth_handler');
+const user_auth_handler = require('../../services/user_services/user_auth_handler');
 const base_response = require('../base_response');
 const router = require('express').Router();
 
