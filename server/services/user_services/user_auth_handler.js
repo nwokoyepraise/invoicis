@@ -28,7 +28,7 @@ module.exports.user_login = async function (user) {
         const mrjwt = await token_handle.gen_rjwt();
         const jwt = token_handle.gen_jwt({ user_id: res0.user_id, user_type: 0, email_verified: false });
 
-        let res1 = await user_profile_model.update_profile_data('rjwt', mrjwt.hash, 'user_id', res0.user_id)
+        let res1 = await user_profile_model.update_profile_data(['rjwt'], [mrjwt.hash], 'user_id', res0.user_id)
 
         //if successful, return new credentials
         if (res1.rowCount > 0) { return { status: true, data: { user_id: res0.user_id, rjwt: mrjwt.value, jwt: jwt, email_verified: false } } }
