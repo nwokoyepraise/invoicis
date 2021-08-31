@@ -33,7 +33,7 @@ module.exports.user_login = async function (body) {
         //if successful, return new credentials
         if (res1.rowCount > 0) { return { status: true, data: { user_id: res0.user_id, rjwt: mrjwt.value, jwt: jwt, email_verified: false } } }
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
     }
 }
