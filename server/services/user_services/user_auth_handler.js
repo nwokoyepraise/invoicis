@@ -2,10 +2,10 @@ const user_profile_model = require('../../models/user_profile_model');
 const argon2 = require('argon2');
 const token_handle = require('../../utils/token_handle');
 
-module.exports.user_login = async function (user) {
+module.exports.user_login = async function (body) {
     try {
-        let email_or_phone = user.email_or_phone?.toLowerCase(),
-            password = user.password;
+        let email_or_phone = body.email_or_phone?.toLowerCase(),
+            password = body.password;
 
         //return if any credential is null
         if (!email_or_phone || !password) { return { status: false, status_code: 400, message: "Null values not allowed!" } }

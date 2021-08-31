@@ -6,7 +6,7 @@ const router = require('express').Router();
 module.exports.user_login = router.post('', async (req, res) => {
     try {
 
-        let data = await user_auth_handler.user_login(req.body.user);
+        let data = await user_auth_handler.user_login(req.body);
         base_response.send_response(res, data);
 
     } catch (error) {
