@@ -1,5 +1,3 @@
-const { pool } = require('../../config/postgres_config');
-const token_handle = require('../../utils/token_handle');
 const router = require('express').Router();
 const user_key_handler = require('../../services/user_services/user_key_handler');
 const base_response = require('../base_response');
