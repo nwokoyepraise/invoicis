@@ -26,3 +26,11 @@ module.exports.update_api_keys = async function (api_key_id, api_key_secret, use
 
     }
 }
+
+module.exports.create_user = async function (user_id, email, password, timestamp, rjwt_hash) {
+    try {
+        return await pool.query('INSERT INTO user_profile(user_id, email, password, timestamp, rjwt) VALUES($1, $2, $3, $4, $5) RETURNING user_id', [user_id, email, password, timestamp, rjwt_hash]);
+    } catch (error) {
+        console.error(error);
+    }
+}
