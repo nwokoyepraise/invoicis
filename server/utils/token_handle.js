@@ -30,21 +30,20 @@ module.exports.hash_password = async function (password) {
 
 module.exports.chk_jwt = async function (user_id, jwt, res) {
     try {
-        var valid = false;
         var res0 = await mjwt.verify(jwt, key);
         //if (!res0.email_verified) { res.status(406).send({ status: false, message: 'Email not verified!' }); return valid; }
         if (res0.user_id == user_id) {
-            valid = true;
+            return { status: true }
         } else {
-            throw new Error('JWT and user_id mismatch!');
+            return { status: false, message: 'JWT and user_id mismatch' }
         }
-        return valid;
 
     } catch (error) {
         console.error(error);
         if (error.name == 'TokenExpiredError') {
-            res.status(406).send({ status: false, message: 'TokenExpiredError' }); return valid;
-        } else { console.log(error); res.status(406).send({ status: false, message: 'Not Allowed' }); return valid; }
+            return { status: false, message: 'TokenExpiredError' }
+        }
+        return { status: false, message: 'Not Allowed' }
     }
 }
 
