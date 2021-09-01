@@ -41,8 +41,8 @@ module.exports = async (body) => {
     } catch (error) {
         console.error(error);
         if (error?.code == '23505') {
-            return { status: false, message: "Email already exists!" }
+            return { status: false, status_code: 406, message: "Email already exists!" }
         }
-        return { status: false, message: "Internal Server Error" }
+        return { status: false, status_code: 500, message: 'Internal Server Error' }
     }
 }

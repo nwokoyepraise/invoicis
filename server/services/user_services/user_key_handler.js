@@ -27,5 +27,6 @@ module.exports.gen_api_key = async function (query, header) {
         if (res0.rowCount > 0) { return { status: true, data: { key_id: key.key_id, key_secret: key.key_secret } } }
     } catch (error) {
         console.error(error);
+        return { status: false, status_code: 500, message: 'Internal Server Error' }
     }
 }

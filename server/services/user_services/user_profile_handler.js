@@ -21,6 +21,7 @@ module.exports.get_user_profile = async function (query, header) {
         return { status: false, status_code: 404, message: 'User does not exist!' }
     } catch (error) {
         console.error(error);
+        return { status: false, status_code: 500, message: 'Internal Server Error' }
     }
 
 }
