@@ -1,14 +1,16 @@
 const user_profile_model = require('../../models/user_profile_model');
+const token_handle = require('../../utils/token_handle');
 
 module.exports.get_user_profile = async function (query, header) {
     try {
         let user_id = query.user_id;
 
         //retrieve user jwt from header
-        //let jwt = token_handle.get_auth(header);
+        let jwt = token_handle.get_auth(header);
 
         //check jwt
-        // if (!await token_handle.chk_jwt(user_id, jwt, res)) { return; }
+        let valid = await token_handle.chk_jwt(user_id, jwt);
+        if (!valid.status) { return  { status: false, status_code: 406, message: valid.message }}
 
         //query profile data
         var res0 = await user_profile_model.get_profile_data(['name', 'email', 'phone'], 'user_id', user_id);

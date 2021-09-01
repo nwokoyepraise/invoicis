@@ -10,7 +10,8 @@ module.exports.gen_api_key = async function (query, header) {
         let jwt = token_handle.get_auth(header);
 
         //check jwt
-        //if (!await token_handle.chk_jwt(user_id, jwt, res)) { return; }
+        let valid = await token_handle.chk_jwt(user_id, jwt);
+        if (!valid.status) { return  { status: false, status_code: 406, message: valid.message }}
 
         //generate api key
         let key = await token_handle.gen_api_key();

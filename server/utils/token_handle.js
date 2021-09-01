@@ -28,10 +28,10 @@ module.exports.hash_password = async function (password) {
     }
 }
 
-module.exports.chk_jwt = async function (user_id, jwt, res) {
+module.exports.chk_jwt = async function (user_id, jwt) {
     try {
         var res0 = await mjwt.verify(jwt, key);
-        //if (!res0.email_verified) { res.status(406).send({ status: false, message: 'Email not verified!' }); return valid; }
+        //if (!res0.email_verified) { return { status: false, message: 'Email not verified!' } }
         if (res0.user_id == user_id) {
             return { status: true }
         } else {
