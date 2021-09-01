@@ -1,40 +1,36 @@
 require('dotenv').config();
 const argon2 = require('argon2');
 const mjwt = require('jsonwebtoken');
-const { pool } = require('../config/postgres_config');
 const crypt_gen = require('../utils/crypt_gen');
 const key = process.env.JWTKEY;
 
 
 module.exports.gen_rjwt = async function () {
-    let rjwt = {};
     try {
+        let rjwt = {};
         const mrjwt = crypt_gen.gen(12);
         const _mrjwt = await argon2.hash(mrjwt);
 
         rjwt.value = mrjwt;
         rjwt.hash = _mrjwt;
 
+        return rjwt;
     } catch (error) {
         console.error(error);
     }
-    return rjwt;
 }
 
 module.exports.hash_password = async function (password) {
     try {
-        password = await argon2.hash(password);
-
+        return await argon2.hash(password);
     } catch (error) {
         console.error(error);
     }
-    return password;
 }
 
 module.exports.chk_jwt = async function (user_id, jwt, res) {
-    var valid = false;
-
     try {
+        var valid = false;
         var res0 = await mjwt.verify(jwt, key);
         //if (!res0.email_verified) { res.status(406).send({ status: false, message: 'Email not verified!' }); return valid; }
         if (res0.user_id == user_id) {
@@ -42,13 +38,14 @@ module.exports.chk_jwt = async function (user_id, jwt, res) {
         } else {
             throw new Error('JWT and user_id mismatch!');
         }
+        return valid;
+
     } catch (error) {
         console.error(error);
         if (error.name == 'TokenExpiredError') {
             res.status(406).send({ status: false, message: 'TokenExpiredError' }); return valid;
         } else { console.log(error); res.status(406).send({ status: false, message: 'Not Allowed' }); return valid; }
     }
-    return valid;
 }
 
 module.exports.gen_jwt = function (user) {
@@ -63,13 +60,13 @@ module.exports.get_auth = function (authHeader) {
 }
 
 module.exports.gen_api_key = async function () {
-    let key = {};
     try {
+        let key = {};
         key.key_id = crypt_gen.gen(20);
         key.key_secret = crypt_gen.gen(40);
         key._key_secret = await argon2.hash(key.key_secret);
+        return key;
     } catch (error) {
         console.error(error);
     }
-    return key;
 }
